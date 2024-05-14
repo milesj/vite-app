@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain } from "electron";
+import { app, BrowserWindow, ipcMain, session } from "electron";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { openFsBrowser } from "./commands/dialog/openFsBrowser";
@@ -22,6 +22,7 @@ function createWindow() {
     height: 728,
     width: 1024,
     webPreferences: {
+      contextIsolation: true,
       preload: path.join(MAIN_DIST, "preload.js"),
     },
   });
@@ -35,7 +36,7 @@ function createWindow() {
 }
 
 function initIpc() {
-  ipcMain.handle("app-start-time", () => new Date().toLocaleString());
+  ipcMain.handle("app:start-time", () => new Date().toLocaleString());
   ipcMain.handle("dialog:open-fs-browser", () => openFsBrowser(win!));
 }
 
@@ -54,5 +55,16 @@ app.on("activate", () => {
 
 app.whenReady().then(() => {
   initIpc();
+
+  // https://www.electronjs.org/docs/latest/tutorial/security#7-define-a-content-security-policy
+  // session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
+  //   callback({
+  //     responseHeaders: {
+  //       ...details.responseHeaders,
+  //       "Content-Security-Policy": ["script-src 'self' https://apis.example.com"],
+  //     },
+  //   });
+  // });
+
   createWindow();
 });
