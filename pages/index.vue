@@ -1,14 +1,42 @@
+<script setup lang="ts">
+const errorMessage = ref('');
+
+const links = [
+	{
+		label: 'Open application',
+		size: 'xl' as const,
+		async click() {
+			errorMessage.value = '';
+
+			const [data, error] = await window.api.openFsBrowser();
+
+			if (error) {
+				errorMessage.value = (error as Error).message;
+			} else if (data) {
+				console.log(data);
+			}
+		},
+	},
+];
+</script>
+
 <template>
-	<div>
-		<ULandingHero
-			description="Nuxt UI Pro is a collection of premium Vue components built on top of Nuxt UI to create beautiful & responsive Nuxt applications in minutes.">
-			<template #title>
-				The <span class="text-primary block lg:inline-block">Building Blocks</span> for Modern Web apps
+	<UContainer>
+		<ULandingCTA
+			title="Vite Dashboard"
+			:card="false"
+			:links="links"
+		>
+			<template #description>
+				Open a directory with a <UKbd size="md">vite.config.*</UKbd> file or <UKbd size="md">vite</UKbd> dependency to get started.
 			</template>
-		</ULandingHero>
+		</ULandingCTA>
 
-		<ULandingSection title="The freedom to build anything" align="left" />
-
-		<ULandingSection title="The flexibility to control your data" align="right" />
-	</div>
+		<UAlert
+			v-if="errorMessage"
+	    :description="errorMessage"
+			color="red"
+	    variant="soft"
+	  />
+	</UContainer>
 </template>

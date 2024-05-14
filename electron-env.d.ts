@@ -7,10 +7,12 @@ declare namespace NodeJS {
   }
 }
 
+type Result<T> = [T, Error | null];
+
 // Used in Renderer process, expose in `preload.ts`
 interface Window {
   api: {
-    openFsBrowser: () => string | null;
+    openFsBrowser: () => Result<{ dir: string; tool: string } | null>;
   };
   ipc: import("electron").IpcRenderer;
 }
