@@ -9,6 +9,7 @@
     "build": "bun run build:web && electron-builder",
     "dev": "bun --bun run dev:internal",
     "dev:internal": "nuxt dev --no-fork",
+    "lint": "oxlint --deny-warnings -D all -A style ./electron ./pages/**/*.vue ./*.ts ./*.vue",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
@@ -18,6 +19,7 @@
     "@nuxt/ui-pro": "^1.2.0",
     "nuxt": "^3.11.2",
     "nuxt-electron": "^0.7.0",
+    "nuxt-icon": "^0.6.10",
     "vite-plugin-electron": "^0.28.7",
     "vite-plugin-electron-renderer": "^0.14.5",
     "vue": "^3.4.27",
@@ -29,7 +31,9 @@
     "@types/node": "^20.12.12",
     "electron": "^30.0.4",
     "electron-builder": "^24.13.3",
+    "oxlint": "^0.3.4",
     "type-fest": "^4.18.2",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "vue-tsc": "^2.0.17"
   }
 }

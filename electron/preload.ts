@@ -1,5 +1,6 @@
 // https://www.electronjs.org/docs/latest/tutorial/esm#preload-scripts
 
+// eslint-disable-next-line no-var-requires
 const { ipcRenderer, contextBridge } = require("electron");
 
 contextBridge.exposeInMainWorld("ipc", {
