@@ -1,7 +1,8 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  devtools: { enabled: true },
+  extends: ["@nuxt/ui-pro"],
   modules: ["@nuxt/ui", "nuxt-electron"],
+  devtools: { enabled: true },
   electron: {
     build: [
       {
@@ -9,6 +10,9 @@ export default defineNuxtConfig({
       },
       {
         entry: "electron/preload.ts",
+        onstart(args) {
+          args.reload();
+        },
       },
     ],
   },
