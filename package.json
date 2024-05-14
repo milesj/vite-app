@@ -6,15 +6,16 @@
   "main": "dist-electron/main.js",
   "scripts": {
     "build:web": "nuxt build --prerender",
-    "build": "pnpm run build:web && electron-builder",
-    "dev": "nuxt dev --no-fork",
+    "build": "bun run build:web && electron-builder",
+    "dev": "bun --bun run dev:internal",
+    "dev:internal": "nuxt dev --no-fork",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
     "@nuxt/ui": "^2.16.0",
-    "nuxt": "3.6.5",
+    "nuxt": "^3.11.2",
     "nuxt-electron": "^0.7.0",
     "vite-plugin-electron": "^0.28.7",
     "vite-plugin-electron-renderer": "^0.14.5",
@@ -22,8 +23,9 @@
     "vue-router": "^4.3.2"
   },
   "devDependencies": {
-    "@nuxt/devtools": "0.7.0",
+    "@nuxt/devtools": "^1.3.1",
     "@nuxt/ui-templates": "^1.3.3",
+    "@types/node": "^20.12.12",
     "electron": "^30.0.4",
     "electron-builder": "^24.13.3",
     "typescript": "^5.4.5"

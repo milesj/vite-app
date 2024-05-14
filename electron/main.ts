@@ -1,7 +1,11 @@
 import { app, BrowserWindow, ipcMain } from "electron";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-process.env.APP_ROOT = path.join(__dirname, "..");
+process.env.APP_ROOT = path.join(
+  path.dirname(fileURLToPath(import.meta.url)),
+  ".."
+);
 
 const MAIN_DIST = path.join(process.env.APP_ROOT, "dist-electron");
 const RENDERER_DIST = path.join(process.env.APP_ROOT, ".output/public");
