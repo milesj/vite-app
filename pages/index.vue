@@ -1,4 +1,9 @@
 <script setup lang="ts">
+definePageMeta({
+	layout: 'centered'
+});
+
+const project = useActiveProject();
 const errorMessage = ref('');
 
 const links = [
@@ -13,7 +18,8 @@ const links = [
 			if (error) {
 				errorMessage.value = (error as Error).message;
 			} else if (data) {
-				console.log(data);
+				project.value = data;
+				navigateTo('/project');
 			}
 		},
 	},
