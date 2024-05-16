@@ -13,11 +13,9 @@ onMounted(async () => {
 <template >
   <NuxtLoadingIndicator />
 
-  <UMain>
-    <NuxtLayout>
-      <NuxtPage />
-    </NuxtLayout>
-  </UMain>
+  <NuxtLayout>
+    <NuxtPage />
+  </NuxtLayout>
 
   <UModals />
   <UNotifications />

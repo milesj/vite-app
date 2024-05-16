@@ -12,7 +12,7 @@ type Result<T> = [T, Error | null];
 // Used in Renderer process, expose in `preload.ts`
 interface Window {
   api: {
-    openFsBrowser: () => Result<{ dir: string; tool: "nuxt" | "vite" } | null>;
+    openProject: () => Result<{ dir: string; tool: "nuxt" | "vite" } | null>;
   };
   ipc: import("electron").IpcRenderer;
 }

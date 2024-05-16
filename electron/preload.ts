@@ -23,5 +23,7 @@ contextBridge.exposeInMainWorld("ipc", {
 });
 
 contextBridge.exposeInMainWorld("api", {
-  openFsBrowser: () => ipcRenderer.invoke("dialog:open-fs-browser"),
+  execChildProcess: (command: string, args: string[], options: object) =>
+    ipcRenderer.invoke("process:exec-child", command, args, options),
+  openProject: () => ipcRenderer.invoke("dialog:open-fs-browser"),
 });

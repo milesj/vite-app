@@ -2,6 +2,7 @@ import { app, BrowserWindow, ipcMain, session } from "electron";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { openFsBrowser } from "./commands/dialog/openFsBrowser";
+import { execChildProcess } from "./commands/process/execChild";
 
 process.env.APP_ROOT = path.join(
   path.dirname(fileURLToPath(import.meta.url)),
@@ -37,7 +38,12 @@ function createWindow() {
 
 function initIpc() {
   ipcMain.handle("app:start-time", () => new Date().toLocaleString());
+
   ipcMain.handle("dialog:open-fs-browser", () => openFsBrowser(win!));
+
+  ipcMain.handle("process:exec-child", (event, command, args, options) =>
+    execChildProcess(win!, command, args, options)
+  );
 }
 
 app.on("window-all-closed", () => {
