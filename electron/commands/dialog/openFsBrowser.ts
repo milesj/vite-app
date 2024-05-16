@@ -2,7 +2,7 @@ import { BrowserWindow, app, dialog } from "electron";
 import fs from "node:fs";
 import path from "node:path";
 import type { PackageJson } from "type-fest";
-import { ok, err } from "#utils/result";
+import { ok, err, type Result } from "#utils/result";
 
 // Vite should be last!
 const TOOLS = {
@@ -16,7 +16,10 @@ const TOOLS = {
   },
 };
 
-export async function openFsBrowser(win: BrowserWindow) {
+export async function openFsBrowser(
+  win: BrowserWindow,
+  checkForVite: boolean
+): Promise<Result<{ dir: string; tool: string } | null>> {
   let { canceled, filePaths } = await dialog.showOpenDialog(win!, {
     defaultPath: app.getPath("home"),
     properties: ["openDirectory"],
@@ -27,6 +30,11 @@ export async function openFsBrowser(win: BrowserWindow) {
   }
 
   let dir = filePaths[0];
+
+  if (!checkForVite) {
+    return ok({ dir, tool: "vite" });
+  }
+
   let pkgPath = path.join(dir, "package.json");
   let pkg: PackageJson = {};
 

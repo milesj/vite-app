@@ -12,7 +12,9 @@ type Result<T> = [T, Error | null];
 // Used in Renderer process, expose in `preload.ts`
 interface Window {
   api: {
-    openProject: () => Result<{ dir: string; tool: "nuxt" | "vite" } | null>;
+    openProject: (
+      checkForVite: boolean
+    ) => Result<{ dir: string; tool: "nuxt" | "vite" } | null>;
   };
   ipc: import("electron").IpcRenderer;
 }

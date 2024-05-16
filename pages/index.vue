@@ -9,7 +9,7 @@ const errorMessage = ref();
 async function openProject() {
 	errorMessage.value = '';
 
-	const [data, error] = await window.api.openProject();
+	const [data, error] = await window.api.openProject(true);
 
 	if (error) {
 		errorMessage.value = (error as Error).message;

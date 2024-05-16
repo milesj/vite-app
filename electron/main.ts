@@ -39,7 +39,9 @@ function createWindow() {
 function initIpc() {
   ipcMain.handle("app:start-time", () => new Date().toLocaleString());
 
-  ipcMain.handle("dialog:open-fs-browser", () => openFsBrowser(win!));
+  ipcMain.handle("dialog:open-fs-browser", (event, checkForVite) =>
+    openFsBrowser(win!, checkForVite)
+  );
 
   ipcMain.handle("process:exec-child", (event, command, args, options) =>
     execChildProcess(win!, command, args, options)

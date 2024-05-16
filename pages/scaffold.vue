@@ -1,10 +1,17 @@
 <script setup lang="ts">
-const step = ref<'language' | 'template'>('template');
+type Step = 'language' | 'template' | 'location' | 'review';
+const step = ref<Step>('review');
 
 interface CardItem<T> {
 	title: string;
 	icon: string;
 	type: T;
+}
+
+function goTo(value: Step) {
+	return () => {
+		step.value = value;
+	};
 }
 
 // Step 1
@@ -78,7 +85,19 @@ const templates: CardItem<Template>[] = [
 
 function selectTemplate(temp: Template) {
 	template.value = temp;
-	step.value = 'template';
+	step.value = 'location';
+}
+
+// Step 3
+const location = ref('');
+
+async function selectLocation() {
+	const [data] = await window.api.openProject(false);
+
+	if (data) {
+		location.value = data.dir;
+		step.value = 'review';
+	}
 }
 </script>
 
@@ -102,13 +121,59 @@ function selectTemplate(temp: Template) {
 			<UPageHeader
 				headline="Step 2"
 				title="Template"
-				description="What template or framework would you like to be scaffolded for?"
+				description="What template or framework would you like to be scaffolded?"
+					:links="[{ label: 'Back', icon: 'i-heroicons-arrow-left-circle', click: goTo('language') }]"
 			/>
 
 			<UPageBody>
 				<UPageGrid class="grid-cols-2 sm:grid-cols-3 xl:grid-cols-4">
 					<ScaffoldCard v-for="(temp, index) in templates" :key="index" v-bind="temp" @click="selectTemplate(temp.type)" />
 				</UPageGrid>
+			</UPageBody>
+		</UPage>
+
+		<UPage v-if="step === 'location'">
+			<UPageHeader
+				headline="Step 3"
+				title="Location"
+				description="Where would you like to scaffold the project?"
+				:links="[{ label: 'Back', icon: 'i-heroicons-arrow-left-circle', click: goTo('template') }]"
+			/>
+
+			<UPageBody>
+				<div class="mb-8">
+					<UFormGroup label="Project directory">
+						<UInput v-model="location" icon="i-heroicons-folder" />
+					</UFormGroup>
+				</div>
+
+				<div class="text-center">
+					<UButton label="Select directory" size="xl" class="font-bold" @click="selectLocation" />
+
+					<UButton v-if="location !== ''" label="Continue" size="xl" variant="ghost" class="font-bold ml-4" @click="step = 'review'" />
+				</div>
+			</UPageBody>
+		</UPage>
+
+
+		<UPage v-if="step === 'review'">
+			<UPageHeader
+				headline="Step 4"
+				title="Review"
+				description="Review the information below and scaffold when ready!"
+				:links="[{ label: 'Back', icon: 'i-heroicons-arrow-left-circle', click: goTo('template') }]"
+			/>
+
+			<UPageBody>
+				<ScaffoldField title="Language" description="The language of scaffolded files." :value="language" />
+
+				<ScaffoldField title="Template" description="The pre-built template to use." :value="template" />
+
+				<ScaffoldField title="Destination" description="The language of scaffolded files." :value="location" />
+
+				<div class="text-center">
+					<UButton label="Scaffold project" size="xl" class="font-bold" />
+				</div>
 			</UPageBody>
 		</UPage>
 	</UContainer>

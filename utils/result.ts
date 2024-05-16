@@ -8,6 +8,7 @@ export function ok<T>(value: T): Result<T> {
   return [value, null];
 }
 
-export function err(value: string | Error): Result<unknown> {
+export function err<T = unknown>(value: string | Error): Result<T> {
+  // @ts-expect-error Allow null
   return [null, value instanceof Error ? value : new Error(value)];
 }
