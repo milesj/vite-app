@@ -1,6 +1,6 @@
 <script setup lang="ts">
 type Step = 'language' | 'template' | 'location' | 'review';
-const step = ref<Step>('review');
+const step = ref<Step>('language');
 
 interface CardItem<T> {
 	title: string;
@@ -17,7 +17,7 @@ function goTo(value: Step) {
 // Step 1
 type Language = 'javascript' | 'typescript';
 
-const language = ref<Language>('typescript');
+const language = ref<Language>();
 const languages: CardItem<Language>[] = [
 	{
 		title: 'JavaScript',
@@ -39,7 +39,7 @@ function selectLanguage(lang: Language) {
 // Step 2
 type Template = 'vanilla' | 'vue' | 'react' | 'preact' | 'lit' | 'svelte' | 'solid' | 'qwik';
 
-const template = ref<Template>('vanilla');
+const template = ref<Template>();
 const templates: CardItem<Template>[] = [
 	{
 		title: 'Vanilla',
@@ -112,7 +112,13 @@ async function selectLocation() {
 
 			<UPageBody>
 				<UPageGrid>
-					<ScaffoldCard v-for="(lang, index) in languages" :key="index" v-bind="lang" @click="selectLanguage(lang.type)" />
+					<ScaffoldCard
+						v-for="(lang, index) in languages"
+						v-bind="lang"
+						:key="index"
+						:selected="lang.type === language"
+						@click="selectLanguage(lang.type)"
+					/>
 				</UPageGrid>
 			</UPageBody>
 		</UPage>
@@ -127,7 +133,13 @@ async function selectLocation() {
 
 			<UPageBody>
 				<UPageGrid class="grid-cols-2 sm:grid-cols-3 xl:grid-cols-4">
-					<ScaffoldCard v-for="(temp, index) in templates" :key="index" v-bind="temp" @click="selectTemplate(temp.type)" />
+					<ScaffoldCard
+						v-for="(temp, index) in templates"
+						v-bind="temp"
+						:key="index"
+						:selected="temp.type === template"
+						@click="selectTemplate(temp.type)"
+					/>
 				</UPageGrid>
 			</UPageBody>
 		</UPage>
@@ -143,7 +155,7 @@ async function selectLocation() {
 			<UPageBody>
 				<div class="mb-8">
 					<UFormGroup label="Project directory">
-						<UInput v-model="location" icon="i-heroicons-folder" />
+						<UInput v-model="location" icon="i-heroicons-folder" size="lg" disabled />
 					</UFormGroup>
 				</div>
 
@@ -161,7 +173,7 @@ async function selectLocation() {
 				headline="Step 4"
 				title="Review"
 				description="Review the information below and scaffold when ready!"
-				:links="[{ label: 'Back', icon: 'i-heroicons-arrow-left-circle', click: goTo('template') }]"
+				:links="[{ label: 'Back', icon: 'i-heroicons-arrow-left-circle', click: goTo('location') }]"
 			/>
 
 			<UPageBody>
@@ -169,7 +181,7 @@ async function selectLocation() {
 
 				<ScaffoldField title="Template" description="The pre-built template to use." :value="template" />
 
-				<ScaffoldField title="Destination" description="The language of scaffolded files." :value="location" />
+				<ScaffoldField title="Location" description="The destination path to write to." :value="location" />
 
 				<div class="text-center">
 					<UButton label="Scaffold project" size="xl" class="font-bold" />

@@ -22,7 +22,7 @@ export async function openFsBrowser(
 ): Promise<Result<{ dir: string; tool: string } | null>> {
   let { canceled, filePaths } = await dialog.showOpenDialog(win!, {
     defaultPath: app.getPath("home"),
-    properties: ["openDirectory"],
+    properties: ["openDirectory", "createDirectory", "promptToCreate"],
   });
 
   if (canceled || filePaths.length === 0) {
